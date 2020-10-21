@@ -203,14 +203,6 @@ int main (int argc,char*argv[]){
 	
 	scanf("%d %d %d %d",&a,&b,&c,&d);
 	
-	/*
-	answers[0]=a;
-	answers[1]='+';
-	answers[2]=b;
-	answers[3]='-';
-	
-	printf("array= %d %c %d %c \n",answers[0],answers[1],answers[2],answers[3]);
-	*/
 	
 	/* This loop tries all different combinations of the 4 numbers.*/
 	for(x=1;x<5;x++){		
