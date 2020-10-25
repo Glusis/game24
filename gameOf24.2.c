@@ -218,7 +218,8 @@ int main (int argc,char*argv[]){
 			swap(&b,&c);
 		
 		}
-		
+		swap(&c,&d);
+		swap(&b,&c);
 		swap(&a,&b);
 		
 	}
