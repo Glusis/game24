@@ -2,15 +2,13 @@
 /* Function that checks the number in pairs.*/
 
 int searchPairs(int x,int y, int z, int t, char array[8],int start){
-	
-	//printf("x=%d y=%d z=%d t=%d start=%d\n",x,y,z,t,start);
-	//printf("Array: (%d %c %d) %c (%d %c %d)\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
 		
 	int sum=x;
 	int count=0;
 	
 	/* If start is 8, this means we now have our 2 pairs.*/
 	if(start==8){
+		
 		/* Check for pair1 + pair 2*/
 		sum+=y;
 		
@@ -57,8 +55,7 @@ int searchPairs(int x,int y, int z, int t, char array[8],int start){
 		sum=sum*y;
 		
 	}else{	
-		//printf(" OBS start inte 8, Array: (%d %c %d) %c (%d %c %d)\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-	
+		
 		/*Check for x+y*/	
 		sum+=y;
 		
