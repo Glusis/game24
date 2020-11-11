@@ -94,8 +94,8 @@ int searchPairs(int x,int y, int z, int t, char array[8],int start){
 		
 		count+=searchPairs(z,t,sum,0,array,start);
 		
-		start-=4;	
-		sum-=y;		
+		start-=4;
+		sum-=y;	
 		
 		/*Check for x*y*/
 		sum=sum*y;
