@@ -1,31 +1,23 @@
+<<<<<<< Updated upstream
 /* 
  * 	file: sequential.c
  *	author: Philip Blesinger (p.a.blesinger@student.rug.nl)
  * 	date: 11/11/2020
  * 	version: 1.0
  */
+=======
+/*file : gameOf24.c */
+/*author : Julia */
+/*date : 21/10-2020*/
+/*version: 1.0*/
+
+/*Description:..... */
+>>>>>>> Stashed changes
 
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void swap(int *xp, int *yp)//source: https://www.geeksforgeeks.org/c-program-for-bubble-sort/?ref=rp
-{ 
-    int temp = *xp; 
-    *xp = *yp; 
-    *yp = temp; 
-} 
-  
-void bubbleSort(int arr[], int n)//source: https://www.geeksforgeeks.org/c-program-for-bubble-sort/?ref=rp
-{ 
-   int i, j; 
-   for (i = 0; i < n-1; i++)       
-  
-       // Last i elements are already in place    
-       for (j = 0; j < n-i-1; j++)  
-           if (arr[j] > arr[j+1]) 
-              swap(&arr[j], &arr[j+1]); 
-}
 
 
 
@@ -125,6 +117,3 @@ int main(int argc, char *argv[]){
 	loops(array);
 	return 0;
 }
-
-
-

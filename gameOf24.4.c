@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if 1
 
 /* Function that swaps values of variable x and y.*/
 void swap(int *px,int *py){
@@ -23,14 +22,13 @@ void swap(int *px,int *py){
 
 int searchPairs(int x,int y, int z, int t, char array[8],int start){
 	
-	//printf("x=%d y=%d z=%d t=%d start=%d\n",x,y,z,t,start);
-	//printf("Array: (%d %c %d) %c (%d %c %d)\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-		
 	int sum=x;
 	int count=0;
 	
-	/* If start is 8, this means we now have our 2 pairs.*/
+	/* If start is 8, this means we now have our 2 pairs, so we see
+	 * if we can get 24.*/
 	if(start==8){
+		
 		/* Check for pair1 + pair 2*/
 		sum+=y;
 		
@@ -79,7 +77,6 @@ int searchPairs(int x,int y, int z, int t, char array[8],int start){
 		}
 		
 	}else{	
-		//printf(" OBS start inte 8, Array: (%d %c %d) %c (%d %c %d)\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
 	
 		/*Check for x+y*/	
 		sum+=y;
@@ -95,8 +92,8 @@ int searchPairs(int x,int y, int z, int t, char array[8],int start){
 		
 		count+=searchPairs(z,t,sum,0,array,start);
 		
-		start-=4;	
-		sum-=y;		
+		start-=4;
+		sum-=y;	
 		
 		/*Check for x*y*/
 		sum=sum*y;
@@ -157,188 +154,204 @@ int searchPairs(int x,int y, int z, int t, char array[8],int start){
 	
 }
 
-/* Given 2 numbers, check if any combinations of the 4 operators for 
- * addition, subtraction, multiplication and dividation gives the answer 24.
- * Send back the amount of possible combinations.*/
-
-int find24(int xyz, int t, char array[7]){
-	
-	int count=0;
-	int sum=xyz;
-	 
-	if(sum<=24){
-		
-		sum+=t;
-		
-		if(sum==24){
-			count++;
-			
-			array[5]='+';
-			array[6]=t;
-			printf("Solution: %d %c %d %c %d %c %d\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-		}
-		
-		sum-=t;
-				
-		sum=sum*t;
-		
-		if(sum==24){
-			count++;
-			
-			array[5]='*';
-			array[6]=t;
-			printf("Solution: %d %c %d %c %d %c %d\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-		
-		}
-		
-		sum=sum/t;
-	}
-	
-	if(sum>=24){
-		
-		sum-=t;
-		
-		if(sum==24){
-			count++;
-			
-			array[5]='-';
-			array[6]=t;
-			printf("Solution: %d %c %d %c %d %c %d\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-		
-		}
-		
-		sum+=t;
-		
-		if(sum%t==0){
-			sum=sum/t;
-			
-			if(sum==24){
-				count++;
-				
-				array[5]='/';
-				array[6]=t;
-				printf("Solution: %d %c %d %c %d %c %d\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
-			
-			}
-			
-			sum=sum*t;
-		}
-	}
-	
-	return count;
-	
-}
 
 
-/* Checks the possible combinations of x and y and z, and send them to 
- * the last function, to find 24. */
-int combo2(int xy, int z, int t, char array[7]){
-	
-	int sum2=xy;
-	int count=0;
-	
-	/*Check for sum2+z*/	
-	sum2+=z;
-	
-	array[3]='+';
-	array[4]=z;
-	count+=find24(sum2,t,array);	
-	
-	sum2-=z;		
-	
-	/*Check for sum2*z*/
-	sum2=sum2*z;
-	
-	array[3]='*';
-	array[4]=z;	
-	count+=find24(sum2,t,array);	
-		
-	sum2=sum2/z;
-	
-	/*Check for sum2-z*/
-	sum2-=z;
-	
-	array[3]='-';
-	array[4]=z;
-	count+=find24(sum2,t,array);	
-		
-	sum2+=z;
-	
-	/*Check for sum2/z*/
-	if(sum2%z==0){
-			
-		sum2=sum2/z;
-		
-		array[3]='/';
-		array[4]=z;
-		count+=find24(sum2,t,array);	
-				
-		sum2=sum2*z;
-	}
-	
-	
-	return count;
-	
-}
 
-/* Checks the possible combinations of x and y. */
-int combo1(int x, int y, int z, int t, char array[7]){
+/* Function that checks the number in order.*/
+
+int searchSeq(int x,int y, int z, int t, char array[8],int start){
+	
 	
 	int sum=x;
 	int count=0;
 	
-	/*Check for x+y*/	
-	sum+=y;
+	if(start==0){
+		array[start]=x;		
+	}
 	
-	array[0]=x;
-	array[1]='+';
-	array[2]=y;
-	count+=combo2(sum,z,t,array);	
-	
-	sum-=y;		
-	
-	/*Check for x*y*/
-	sum=sum*y;
-	
-	array[0]=x;
-	array[1]='*';
-	array[2]=y;	
-	count+=combo2(sum,z,t,array);
+	/* If start is 8, this means we now have our 2 pairs, so we see
+	 * if we can get 24.*/
+	if(start==6){
 		
-	sum=sum/y;
-	
-	/*Check for x-y*/
-	sum-=y;
-	
-	array[0]=x;
-	array[1]='-';
-	array[2]=y;
-	count+=combo2(sum,z,t,array);
+		if(x==24){
+			count++;
+			printf("Solution: ((%d %c %d) %c %d) %c %d\n",array[0],array[1],array[2],array[3],array[4],array[5],array[6]);
+		}
 		
-	sum+=y;
-	
-	/*Check for x/y*/	
-	if(sum%y==0){
 		
+	}else{	
+		
+		/*Check for x+y.*/	
+		sum+=y;
+		
+		array[start+1]='+';
+		array[start+2]=y;
+		start+=2;
+		
+		count+=searchSeq(sum,z,t,0,array,start);
+		
+		start-=2;	
+		sum-=y;		
+		
+		/*Check for x*y.*/
+		sum=sum*y;
+		
+		array[start+1]='*';
+		array[start+2]=y;
+		start+=2;
+		
+		count+=searchSeq(sum,z,t,0,array,start);
+		
+		start-=2;	
 		sum=sum/y;
 		
-		array[0]=x;
-		array[1]='/';
-		array[2]=y;
-		count+=combo2(sum,z,t,array);
+		/*Check for x-y*/
+		sum-=y;
+		
+		array[start+1]='-';
+		array[start+2]=y;
+		start+=2;
+		
+		count+=searchSeq(sum,z,t,0,array,start);
+		
+		start-=2;
+		sum+=y;
+		
+		/*Check for x/y */
+		if(sum%y==0){
 				
-		sum=sum*y;
+			sum=sum/y;
+			
+			array[start+1]='+';
+			array[start+2]=y;
+			start+=2;
+		
+			count+=searchSeq(sum,z,t,0,array,start);
+		
+			start-=2;	
+			sum=sum*y;
+		}
 	}
 	
 	return count;
 	
 }
 
+int searchMid(int a,int b, int c, int d, char array[8],int start){
 
-#endif
+//	printf("a=%d, b=%d, c=%d, d=%d, start=%d\n",a,b,c,d,start);
+	
+	int sum=0;
+	int count=0;
+	int y=0;
+	
+	if (start==0){
+		sum=b;
+		y=c;
+		array[start]=b;
+	}
+	
+	if(start==2){
+		start++;
+		sum=a;
+		y=b;
+		array[start]=a;
+	}
+	
+	if (start==5){
+		start--;
+		sum=b;
+		y=d;
+	}
+	
+	
+	if(start==6){
+		
+	//		printf(" start=6, b=%d\n",b);
+		
+		if(b==24){
+			count++;
+			printf("Solution MID: (%d %c (%d %c %d)) %c %d\n",array[3],array[4],array[0],array[1],array[2],array[5],array[6]);
+		}
+		
+		return count;
+		
+		
+	}
+		
+		/*Check for x+y.*/	
+		sum+=y;
+		
+		array[start+1]='+';
+		if(start!=3){
+			array[start+2]=y;
+		}
+		start+=2;
+				
+		count=count+searchMid(a,sum,c,d,array,start);
+		
+		
+		start-=2;	
+		sum-=y;		
+		
 
+		/*Check for x*y.*/
+		sum=sum*y;
+		
+		array[start+1]='*';
+		if(start!=3){
+			array[start+2]=y;
+		}
+		start+=2;
+		
+		
+		count=count+searchMid(a,sum,c,d,array,start);
+		
+		
+		start-=2;	
+		sum=sum/y;
+		
+		/*Check for x-y*/
+		sum-=y;
+		
+		array[start+1]='-';
+		if(start!=3){
+			array[start+2]=y;
+		}
+		start+=2;
+		
+				
+		count=count+searchMid(a,sum,c,d,array,start);
+		
+		
+		start-=2;	
+		sum+=y;
+		
+		/*Check for x/y */
+		if(sum%y==0){
+				
+			sum=sum/y;
+		
+			array[start+1]='/';
+			if(start!=3){
+				array[start+2]=y;
+			}
+			start+=2;
+			
+			
+			count=count+searchMid(a,sum,c,d,array,start);
+			
+			
+			start-=2;	
+			sum=sum*y;
+		
+	}
+	
 
-
+	
+	return count;
+	
+}
 
 
 int main (int argc,char*argv[]){
@@ -348,24 +361,24 @@ int main (int argc,char*argv[]){
 	char answers[8];
 	
 	scanf("%d %d %d %d",&a,&b,&c,&d);
-
-#if 1	
+	
 	
 	/* This loop tries all different combinations of the 4 numbers.*/
 	for(x=1;x<5;x++){	
 		for(y=1;y<4;y++){
 			
-			combos+=combo1(a,b,c,d,answers);
 			combos+=searchPairs(a,b,c,d,answers,0);
+			combos+=searchSeq(a,b,c,d,answers,0);
+			combos+=searchMid(a,b,c,d,answers,0);
 			
-			//printf("%d %d %d %d\n",a,b,c,d);
+	
 				
 			swap(&c,&d);
 			
-			combos+=combo1(a,b,c,d,answers);
+			combos+=searchSeq(a,b,c,d,answers,0);
 			combos+=searchPairs(a,b,c,d,answers,0);
+			combos+=searchMid(a,b,c,d,answers,0);
 			
-			//printf("%d %d %d %d\n",a,b,c,d);
 			swap(&b,&c);
 		
 		}
@@ -377,8 +390,6 @@ int main (int argc,char*argv[]){
 	
 	printf("Amount of combinations possible: %d\n",combos);
 	
-#endif
-	
 	
 	
 	
@@ -386,3 +397,9 @@ int main (int argc,char*argv[]){
 	
 return 0;
 }
+
+
+
+
+
+
