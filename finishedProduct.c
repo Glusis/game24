@@ -1,23 +1,14 @@
 /*file : gameOf24.c */
-/*author : Julia */
-/*date : 21/10-2020*/
-/*version: 1.0*/
-
-/*Description:..... */
+/*author : Julia & Phil */
+/*date : 14/11-2020*/
+/*version: 1.99*/
 
 
 #include <stdio.h>
 #include <stdlib.h>
 
-
-/* Function that swaps values of variable x and y.*/
-void swap(float *px,float *py){
-	float h=*px;
-	*px=*py;
-	*py=h;
-}
-
-
+/*Function that uses a chosen operation on two given numbers and returns the 
+ * value we get after the operation.*/
 float useOp(int op, float sum, float no){
 	switch(op){
 		case 0:
@@ -38,6 +29,8 @@ float useOp(int op, float sum, float no){
 			return 0;
 	}
 }
+
+/*Function that returns the chosen operator as a character.*/
 char showOp(int op){
 	switch(op){
 		case 0:
@@ -55,115 +48,133 @@ char showOp(int op){
 	}
 }
 
-
-
-int loops(int array[]){
-	float sum1,sum2,sum3,sum4,sum5=0;
-	int count = 0;
-	int f,g,h,i = 0;
+/*Function that finds possible solutions and prints them.*/
+int find24(int array[4]){
 	
-	for(int a=0; a<4; a++){
-		sum1 = 0;
-		sum2 = 0;
-		sum3 = 0;
-		sum4 = 0;
-		//choose first no
-		f = array[a];
-		sum1 = array[a];
-		for(int x=0; x<4; x++){
-			//choose op
-			for(int b=0; b<4; b++){
-				//choose second no
+	float sum2,sum3,sum4,sum5=0;	
+	int count=0,end=0;
+	int x,t,y,z,a,b,c,d,m,n=0;
+	int dupeb[4]={0,0,0,0};
+	int dupec[4]={0,0,0,0};
+	
+	/* Choose the first number in the combination.*/
+	for(a=0; a<4; a++){ 
+			
+		/* Skips duplicate numbers by checking if we have used the chosen number before, 
+		 * if we have then the loop chooses a new unused number and if there is none we break out.*/	
+		for(x=a-1;x>=0&&a<4;x--){
+			if(array[x]==array[a]){
+				a++;
+				x=a;
+			}
+			if(a==4){
+				end=1;
+				break;
+			}
+		}		
+		if(end){
+			end=0;
+			break;			
+		}
+		
+		/* Choose the first operator.*/
+		for(t=0; t<4; t++){
+			
+			/* Choose the second number.*/
+			for(b=0; b<4; b++){
+				
 				if(b != a){
-					g = array[b];
+					
+					/* Skips duplicate numbers.*/
+					dupeb[m]=array[b];
+					m++;
+											
+					for(x=m-2;x>=0&&m<4;x--){
+						if(dupeb[m-1]==dupeb[x]){
+							end=1;
+							break;
+						}
+					}		
+					if(end){
+						end=0;
+						break;
+					}					
+					
+					sum2 = useOp(t,array[a],array[b]);	
+					
+					/* Choose the second operator.*/
+					for(y=0; y<4; y++){
 						
-					sum2 = useOp(x,sum1,array[b]);
-					
-					
-					
-					
-					for(int y=0; y<4; y++){
-						//choose op
-						for(int c=0; c<4; c++){
-							//choose third no
+						/* Choose the third number.*/
+						for(c=0; c<4; c++){
+							
 							if(c != a && c != b){
-								h = array[c];
+								
+								/* Skips duplicates.*/	
+								dupec[n]=array[c];
+								n++;
+					
+								for(x=n-2;x>=0&&n<4;x--){
+									if(dupec[x]==dupec[n-1]){
+										end=1;
+										break;
+									}
+								}		
+								if(end){
+									end=0;
+									break;
+								}	
+							
+								sum3 = useOp(y,sum2,array[c]);								
+								
+								/* Choose the third operator.*/
+								for(z=0; z<4; z++){
 									
-								sum3 = useOp(y,sum2,h);
-								
-								
-								
-								
-								
-								
-								for(int z=0; z<4; z++){
-									//choose op
-									
-									for(int d=0; d<4; d++){
-										//choose fourth no
-										if(d != a && d != b && d != c){
-											
-											//printf("a=%d, b=%d, c=%d, d=%d\n",array[a],array[b],array[c],array[d]);
-											i = array[d];	
-											
-											
-											/* Check sequential (a&b&c&d).*/					
-											sum4 = useOp(z,sum3,i);
-											//printf("%d ",sum4);
-											if(sum4 == 24){
-												count++;
-												printf("SEQ: ((%d%c%d)%c%d)%c%d\n",f,showOp(x),g,showOp(y),h,showOp(z),i);
-											}
-											
+									/* Choose the fourth number.*/
+									for(d=0; d<4; d++){
 										
-									
-											/* Check pairs (a&b and c&d).*/	
+										if(d != a && d != b && d != c){											
 											
-											/* Check c&d.*/
-											sum5=useOp(z,h,i);												
-											
+											/* Here we check if we have a solution, and if so we print it.*/					
+											sum4 = useOp(z,sum3,array[d]);											
+											if(sum4 == 24){
+												count++;
+												printf("((%d%c%d)%c%d)%c%d\n",array[a],showOp(t),array[b],showOp(y),array[c],showOp(z),array[d]);
+											}											
+										
+											sum5=useOp(z,array[c],array[d]);									
 											sum4 = useOp(y,sum2,sum5);
-											//printf("%d ",sum4);
 											if(sum4 == 24){
 												count++;
-												printf("PAIRS:(%d%c%d)%c(%d%c%d)\n",f,showOp(x),g,showOp(y),h,showOp(z),i);			
+												printf("(%d%c%d)%c(%d%c%d)\n",array[a],showOp(t),array[b],showOp(y),array[c],showOp(z),array[d]);			
 											}
 											
-											
-											/* Check pairs d&((a&b)&c).*/
-											sum4 = useOp(z,i,sum3);
-											//printf("%d ",sum4);
+											sum4 = useOp(z,array[d],sum3);
 											if(sum4 == 24){
 												count++;
-												printf("OTHER:%d%c((%d%c%d)%c%d)\n",i,showOp(z),f,showOp(x),g,showOp(y),h);
+												printf("%d%c((%d%c%d)%c%d)\n",array[d],showOp(z),array[a],showOp(t),array[b],showOp(y),array[c]);
 											}
 											
-											
-											/* Check pairs (c&(a&b))&d.*/
-											sum5=useOp(y,h,sum2);
-											sum4 = useOp(z,sum5,i);
-											//printf("%d ",sum4);
+											sum5=useOp(y,array[c],sum2);
+											sum4 = useOp(z,sum5,array[d]);
 											if(sum4 == 24){
 												count++;
-												printf("OTHER:(%d%c(%d%c%d))%c%d\n",h,showOp(y),f,showOp(x),g,showOp(z),i);
-											}
-											
+												printf("(%d%c(%d%c%d))%c%d\n",array[c],showOp(y),array[a],showOp(t),array[b],showOp(z),array[d]);
+											}											
 										}
 									}
 								}
 							}
 						}
+						n=0;
 					}
-				}
+				}			
 			}
+			m=0;
 		}
-	}
-	
+	}	
 	return count;
 }
-
-
-
 
 int main (int argc,char*argv[]){
 	
@@ -174,20 +185,15 @@ int main (int argc,char*argv[]){
 	
 	int numbers[4]={a,b,c,d};
 	
-	combos+=loops(numbers);
+	combos+=find24(numbers);
 	
 	if(combos){
 		printf("Amount of combinations possible: %d\n",combos);
 	}else{
 		printf("No possible combinations!\n");
-	}
-	
+	}	
 
 return 0;
 }
-
-
-
-
 
 
