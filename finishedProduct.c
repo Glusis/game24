@@ -51,9 +51,9 @@ char showOp(int op){
 /*Function that finds possible solutions and prints them.*/
 int find24(int array[4]){
 	
-	float sum2,sum3,sum4,sum5=0;	
-	int count=0,end=0;
-	int x,t,y,z,a,b,c,d,m,n=0;
+	float sum2,sum3,sum4,sum5;	
+	int count=0,end=0,m=0,n=0;
+	int x,t,y,z,a,b,c,d;
 	int dupeb[4]={0,0,0,0};
 	int dupec[4]={0,0,0,0};
 	
